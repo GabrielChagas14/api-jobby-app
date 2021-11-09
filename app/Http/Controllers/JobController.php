@@ -14,7 +14,8 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        $jobs = Job::all();
+        return $jobs;
     }
 
     /**
@@ -22,10 +23,10 @@ class JobController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+   /* public function create()
     {
         //
-    }
+    }*/
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +36,8 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $job = Job::create($request->all());
+        return  $job;
     }
 
     /**
@@ -46,7 +48,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        //
+        return $job;
     }
 
     /**
@@ -55,10 +57,10 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function edit(Job $job)
+   /* public function edit(Job $job)
     {
         //
-    }
+    }*/
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +71,8 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        //
+        $job->update($request->all());
+        return $job;
     }
 
     /**
@@ -80,6 +83,7 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        //
+        $job->delete();
+        return ['msg'=> 'A job foi deletada com sucesso'];
     }
 }

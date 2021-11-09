@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Route::resource('job', 'App\Http\Controllers\JobController'); rotas com create e edit
+Route::apiResource('job', 'App\Http\Controllers\JobController');
+Route::apiResource('user', 'App\Http\Controllers\UserController');
+Route::apiResource('Allocations', 'App\Http\Controllers\AllocationsController');

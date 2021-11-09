@@ -14,7 +14,8 @@ class AllocationsController extends Controller
      */
     public function index()
     {
-        //
+        $allocations = Allocations::all();
+        return $allocations;
     }
 
     /**
@@ -22,10 +23,10 @@ class AllocationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    /*public function create()
     {
         //
-    }
+    }*/
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +36,8 @@ class AllocationsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $allocations = Allocations::create($request->all());
+        return $allocations;
     }
 
     /**
@@ -46,7 +48,7 @@ class AllocationsController extends Controller
      */
     public function show(Allocations $allocations)
     {
-        //
+        return $allocations;
     }
 
     /**
@@ -55,10 +57,10 @@ class AllocationsController extends Controller
      * @param  \App\Models\Allocations  $allocations
      * @return \Illuminate\Http\Response
      */
-    public function edit(Allocations $allocations)
+    /*public function edit(Allocations $allocations)
     {
         //
-    }
+    }*/
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +71,8 @@ class AllocationsController extends Controller
      */
     public function update(Request $request, Allocations $allocations)
     {
-        //
+        $allocations->update($request->all());
+        return $allocations;
     }
 
     /**
@@ -80,6 +83,7 @@ class AllocationsController extends Controller
      */
     public function destroy(Allocations $allocations)
     {
-        //
+        $allocations->delete();
+        return ['msg'=> 'User foi deletada com sucesso'];
     }
 }
