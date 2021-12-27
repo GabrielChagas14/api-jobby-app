@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return $users;
+        return response()->json($users, 200);
     }
 
     /**
@@ -37,12 +37,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User;  //::create($request->all());
+        $user = new User; //::create($request->all());
+        $request->validate($user->rules(), $user->feedback());
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
-        return $user;
+        return response()->json($user, 201);
     }
 
     /**
@@ -51,9 +53,13 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        return $user;
+        $user = User::whereId($id)->first();
+        if($user ===  null){
+            return response()->json(['erro' => 'usuário pesquisado não existe'], 404);
+        }
+        return response()->json($user, 200);
     }
 
     /**
@@ -74,13 +80,35 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        $user =  User::whereId($id)->first();
+
+        if($request->method() === 'PATCH') {
+
+            $dynamicRules = array();
+
+            foreach($user->rules() as $input => $rule)
+            {
+                if(array_key_exists($input, $request->all()))
+                {
+                    $dynamicRules[$input] = $rule;
+                }
+            }
+            dd($dynamicRules);
+            $request->validate($dynamicRules, $user->feedback());
+        } else
+        {
+            $request->validate($user->rules(), $user->feedback());
+        }
+        if($user === null){
+            return response()->json(['erro' => 'usuário pesquisado não existe'], 404);
+        }
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
-        return $user;
+        return response()->json($user, 200);
     }
 
     /**
@@ -89,9 +117,13 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
+        $user =  User::whereId($id)->first();
+        if($user === null){
+            return response()->json(['erro' => 'usuário pesquisado não existe'], 404);
+        }
         $user->delete();
-        return ['msg'=> 'User foi deletada com sucesso'];
+        return response()->json(['msg'=> 'User foi deletado com sucesso'], 200);
     }
 }
