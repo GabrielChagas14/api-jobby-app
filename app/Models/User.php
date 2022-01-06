@@ -15,7 +15,7 @@ class User extends Model
     {
         return [
             'name' => 'required',
-            'email' => 'required|unique:users,email,'.$this->id.'',
+            //'email' => 'required|unique:users,email,'.$this->id.'|min:3',
             'password' => 'required'
         ];
     }
