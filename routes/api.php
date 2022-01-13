@@ -19,6 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Route::resource('job', 'App\Http\Controllers\JobController'); rotas com create e edit
-Route::apiResource('job', 'App\Http\Controllers\JobController');
-Route::apiResource('user', 'App\Http\Controllers\UserController');
-Route::apiResource('Allocations', 'App\Http\Controllers\AllocationsController');
+Route::prefix('v1')->middleware('jwt.auth')->group(function(){   
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::post('me', 'App\Http\Controllers\AuthController@me');
+    Route::apiResource('job', 'App\Http\Controllers\JobController');
+    Route::apiResource('user', 'App\Http\Controllers\UserController');
+    Route::apiResource('Allocations', 'App\Http\Controllers\AllocationsController');    
+});
+
+
+Route::post('login', 'App\Http\Controllers\AuthController@login');
