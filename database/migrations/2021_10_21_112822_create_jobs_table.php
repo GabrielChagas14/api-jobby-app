@@ -15,9 +15,11 @@ class CreateJobsTable extends Migration
 {
     Schema::create('jobs', function (Blueprint $table) {
         $table->id();
+        $table->unsignedBigInteger('user_id');
         $table->string('title', 100);
         $table->string('description', 1000);
         $table->dateTime('due_date');
+        $table->foreign('user_id')->references('id')->on('users');
         $table->timestamps();
 
     });
